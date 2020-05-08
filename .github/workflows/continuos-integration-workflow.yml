@@ -22,32 +22,26 @@ jobs:
     - name: Build OpenVisus for Conda
       shell: bash -l {0}
       run: | 
+         conda info
          conda config --set always_yes yes --set changeps1 no --set anaconda_upload no 
          conda update -q conda 
          conda create -q -n tmp python=${{ matrix.python-version }}  
          conda activate tmp
-         conda install conda-build anaconda-client numpy     
+         conda install conda-build anaconda-client anaconda-client numpy     
 
-export PYTHONUNBUFFERED=1
+         PYTHONPATH=../ python -m OpenVisus configure
+         PYTHONPATH=../ python -m OpenVisus test
+         PYTHONPATH=../ python -m OpenVisus convert
   
-PYTHONPATH=../ python -m OpenVisus configure
-PYTHONPATH=../python -m OpenVisus test
-PYTHONPATH=../python -m OpenVisus convert
-  
-rm -Rf $(find /Miniconda3 -iname "openvisus*.tar.bz2")	 
- 
- 
-python -c "import os,glob;[os.remove(it) for it in glob.glob(r'%MINICONDA_DIR%\**\openvisus*.tar.bz2',recursive=True)]"
-python setup.py -q bdist_conda 
-python -c "import glob;print(glob.glob(r'%MINICONDA_DIR%\**\openvisus*.tar.bz2', recursive=True)[0])" >tmp.txt 
-set /P CONDA_FILENAME=<tmp.txt
-echo "CONDA_FILENAME=%CONDA_FILENAME%"
+         rm -Rf $(find /Miniconda3 -iname "openvisus*.tar.bz2")	 
+         python setup.py -q bdist_conda 
+         CONDA_FILENAME=$(find ~/miniconda3 -iname "openvisus*.tar.bz2"  | head -n 1)
 
-git describe --tags --exact-match 2>NUL
-if ERRORLEVEL == 0 ( 
-	anaconda -t "%ANACONDA_TOKEN%" upload "%CONDA_FILENAME%" 
-)  
-
+         if [[ "${GIT_TAG}" != "" && "${ANACONDA_TOKEN}" != "" ]] ; then
+            CONDA_FILENAME=$(find ~/miniconda3 -iname "openvisus*.tar.bz2"  | head -n 1)
+            echo "CONDA_FILENAME ${CONDA_FILENAME}"
+            anaconda -t "${ANACONDA_TOKEN}" upload "${CONDA_FILENAME}"
+         fi
     
     - uses: actions/checkout@v2
     
