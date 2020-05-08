@@ -25,6 +25,8 @@ jobs:
       run: |
         echo "HELLO GUY"
     
+        python -h
+
     
     - name: Install CMake and Swig
       uses: crazy-max/ghaction-chocolatey@v1
