@@ -14,8 +14,6 @@ jobs:
     
     - name: Install Miniconda 
       uses: goanpeca/setup-miniconda@v1
-      with:
-        miniconda-version: 'latest'
 
     - name: Build OpenVisus for Conda
       shell: bash -l {0}
