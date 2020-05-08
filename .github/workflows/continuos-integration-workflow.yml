@@ -12,6 +12,21 @@ jobs:
         python-version: [ '3.6' ]   
     steps:
     
+    - name: Install Miniconda 
+      uses: goanpeca/setup-miniconda@v1
+      with:
+        miniconda-version: 'latest'
+        activate-environment: tmp        
+        python-version: ${{ matrix.python-version }}
+
+    - name: Build OpenVisus for Conda
+      shell: cmd
+      run: | 
+         conda config --set always_yes yes --set changeps1 no --set anaconda_upload no
+         conda install conda-build anaconda-client numpy        
+         call .\scripts\build_conda.bat
+
+    
     - uses: actions/checkout@v2
     
     - name: Set up CPython
@@ -26,12 +41,7 @@ jobs:
            set Python_EXECUTABLE=%pythonLocation%\python.exe
            echo %Python_EXECUTABLE%
            %Python_EXECUTABLE% -c "print('Python is working just fine')"
-           dir ${{ github.workspace }}
-           dir ${{ github.workspace }}\Qt
-           dir ${{ github.workspace }}\Qt\5.9.2
            set Qt5_DIR=${{ github.workspace }}\Qt\5.9.2\win64_msvc2017_64\lib\cmake\Qt5
-           dir %Qt5_DIR%
-           echo %Qt5_DIR%
            call .\scripts\build_win.bat  
 
     - name: Install CMake and Swig
@@ -49,19 +59,6 @@ jobs:
         dir: '${{ github.workspace }}/Qt/'
         install-deps: 'true'
          
-    - name: Install Miniconda 
-      uses: goanpeca/setup-miniconda@v1
-      with:
-        miniconda-version: 'latest'
-        activate-environment: tmp        
-        python-version: ${{ matrix.python-version }}
-
-    - name: Build OpenVisus for Conda
-      shell: cmd
-      run: | 
-         conda config --set always_yes yes --set changeps1 no --set anaconda_upload no
-         conda install conda-build anaconda-client numpy        
-         call .\scripts\build_conda.bat
 
 
 
