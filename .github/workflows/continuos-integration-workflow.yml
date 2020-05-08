@@ -21,22 +21,18 @@ jobs:
         architecture: 'x64'    
     
     - name: Build OpenVisus 
-      shell: cmd
+      shell: bash
       run: |
-      	where python \>tmp.txt
-      	set /P Python_EXECUTABLE=\<tmp.txt
-      	echo %Python_EXECUTABLE%
-        set Qt5_DIR=${{ github.workspace }}/Qt/5.9.2/win64_msvc2017_64/lib/cmake/Qt5
-        .\scripts\build_win.bat    
-    
-    
+      	export Python_EXECUTABLE=$(which python)
+      	echo ${Python_EXECUTABLE}
+        export Qt5_DIR=${{ github.workspace }}/Qt/5.9.2/win64_msvc2017_64/lib/cmake/Qt5
+        ./scripts/build_win.bat    
+
     - name: Install CMake and Swig
       uses: crazy-max/ghaction-chocolatey@v1
       with:
         args: install -y --allow-empty-checksums cmake swig 
-            
 
-        
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
@@ -61,7 +57,7 @@ jobs:
       run: | 
          conda config --set always_yes yes --set changeps1 no --set anaconda_upload no
          conda install conda-build anaconda-client numpy        
-         .\scripts\build_conda.bat
+         call .\scripts\build_conda.bat
 
 
 
