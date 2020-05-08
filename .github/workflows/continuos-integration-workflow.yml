@@ -24,7 +24,7 @@ jobs:
       shell: cmd
       run: |
       	'where python >tmp.txt'
-      	'set /P Python_EXECUTABLE=<tmp.txt'
+      	set /P Python_EXECUTABLE=\<tmp.txt
       	echo %Python_EXECUTABLE%
         set Qt5_DIR=${{ github.workspace }}/Qt/5.9.2/win64_msvc2017_64/lib/cmake/Qt5
         .\scripts\build_win.bat    
