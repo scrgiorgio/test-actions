@@ -20,8 +20,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Build OpenVisus for Conda
-      shell: bash
+      shell: bash -l {0}
       run: | 
+         conda info
          conda config --set always_yes yes --set changeps1 no --set anaconda_upload no 
          conda install conda-build anaconda-client numpy        
          call .\scripts\build_conda.bat
