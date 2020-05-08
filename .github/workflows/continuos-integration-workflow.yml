@@ -16,15 +16,15 @@ jobs:
       uses: goanpeca/setup-miniconda@v1
       with:
         miniconda-version: 'latest'
-        activate-environment: tmp        
-        python-version: ${{ matrix.python-version }}
 
     - name: Build OpenVisus for Conda
       shell: bash -l {0}
       run: | 
-         conda info
          conda config --set always_yes yes --set changeps1 no --set anaconda_upload no 
-         conda install conda-build anaconda-client numpy        
+         conda update -q conda 
+         conda create -q -n tmp python=${{ matrix.python-version }}  
+         conda activate tmp
+         conda install conda-build anaconda-client numpy     
          call .\scripts\build_conda.bat
 
     
