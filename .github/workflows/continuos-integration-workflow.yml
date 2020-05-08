@@ -4,8 +4,7 @@ on: [push]
 
 jobs:
 
-
-	Win36:
+  Win36:
 
     runs-on: windows-latest
     strategy:
