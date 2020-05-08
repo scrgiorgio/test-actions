@@ -21,6 +21,7 @@ jobs:
         architecture: 'x64'    
     
     - name: Build OpenVisus 
+      shell: cmd
       run: |
       	where python >tmp.txt
       	set /P Python_EXECUTABLE=<tmp.txt
