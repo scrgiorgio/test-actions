@@ -14,16 +14,27 @@ jobs:
     
     - uses: actions/checkout@v2
     
+    - name: Set up CPython
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }} 
+        architecture: 'x64'    
+    
+    - name: Build OpenVisus 
+      run: |
+      	where python >tmp.txt
+      	set /P Python_EXECUTABLE=<tmp.txt
+      	echo %Python_EXECUTABLE%
+        set Qt5_DIR=${{ github.workspace }}/Qt/5.9.2/win64_msvc2017_64/lib/cmake/Qt5
+        .\scripts\build_win.bat    
+    
+    
     - name: Install CMake and Swig
       uses: crazy-max/ghaction-chocolatey@v1
       with:
         args: install -y --allow-empty-checksums cmake swig 
             
-    - name: Set up CPython
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }} 
-        architecture: 'x64'
+
         
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
@@ -35,11 +46,7 @@ jobs:
         dir: '${{ github.workspace }}/Qt/'
         install-deps: 'true'
     
-    - name: Build OpenVisus 
-      run: |
-        set Python_EXECUTABLE=python.exe
-        set Qt5_DIR=${{ github.workspace }}/Qt/5.9.2/win64_msvc2017_64/lib/cmake/Qt5
-        .\scripts\build_win.bat
+
          
     - name: Install Miniconda 
       uses: goanpeca/setup-miniconda@v1
@@ -49,6 +56,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Build OpenVisus for Conda
+      shell: cmd
       run: | 
          conda config --set always_yes yes --set changeps1 no --set anaconda_upload no
          conda install conda-build anaconda-client numpy        
