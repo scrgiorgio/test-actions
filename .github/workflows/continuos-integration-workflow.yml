@@ -41,7 +41,8 @@ jobs:
            set Python_EXECUTABLE=%pythonLocation%\python.exe
            echo %Python_EXECUTABLE%
            %Python_EXECUTABLE% -c "print('Python is working just fine')"
-           set Qt5_DIR=${{ github.workspace }}\Qt\5.9.2\win64_msvc2017_64\lib\cmake\Qt5
+           REM https://github.com/jurplel/install-qt-action set Qt5_DIR 
+           REM Qt5_DIR=...
            call .\scripts\build_win.bat  
 
     - name: Install CMake and Swig
