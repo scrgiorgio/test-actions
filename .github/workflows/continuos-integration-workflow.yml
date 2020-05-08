@@ -21,12 +21,11 @@ jobs:
         architecture: 'x64'    
     
     - name: Build OpenVisus 
-      shell: bash
       run: |
-           ls
            export Python_EXECUTABLE=$(which python)
            echo ${Python_EXECUTABLE}
            export Qt5_DIR=${{ github.workspace }}/Qt/5.9.2/win64_msvc2017_64/lib/cmake/Qt5
+           echo ${Python_EXECUTABLE}
            ./scripts/build_win.bat  
 
 
