@@ -47,12 +47,11 @@ jobs:
         miniconda-version: 'latest'
         activate-environment: tmp        
         python-version: ${{ matrix.python-version }}
-      run: |
-         conda config --set always_yes yes --set changeps1 no --set anaconda_upload no
-         conda install conda-build anaconda-client numpy    
 
     - name: Build OpenVisus for Conda
       run: | 
+         conda config --set always_yes yes --set changeps1 no --set anaconda_upload no
+         conda install conda-build anaconda-client numpy        
          .\scripts\build_conda.bat
 
 
