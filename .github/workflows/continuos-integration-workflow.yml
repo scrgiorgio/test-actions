@@ -26,11 +26,10 @@ jobs:
            set Python_EXECUTABLE=%pythonLocation%\python.exe
            echo %Python_EXECUTABLE%
            %Python_EXECUTABLE% -c "print('Python is working just fine')"
-           set Qt5_DIR=${{ github.workspace }}/Qt/5.9.2/win64_msvc2017_64/lib/cmake/Qt5
+           set Qt5_DIR=${{ github.workspace }}\Qt\5.9.2\win64_msvc2017_64\lib\cmake\Qt5
            dir %Qt5_DIR%
            echo %Qt5_DIR%
            call .\scripts\build_win.bat  
-
 
     - name: Install CMake and Swig
       uses: crazy-max/ghaction-chocolatey@v1
@@ -46,8 +45,6 @@ jobs:
         arch: 'win64_msvc2017_64'
         dir: '${{ github.workspace }}/Qt/'
         install-deps: 'true'
-    
-
          
     - name: Install Miniconda 
       uses: goanpeca/setup-miniconda@v1
