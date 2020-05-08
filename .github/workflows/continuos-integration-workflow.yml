@@ -24,9 +24,8 @@ jobs:
       shell: cmd
       run: |
         echo "HELLO GUY"
+        python -c "import sys;print(sys.executable)"
     
-        python -h
-
     
     - name: Install CMake and Swig
       uses: crazy-max/ghaction-chocolatey@v1
